@@ -6,7 +6,7 @@
 set -e
 
 # Configuration
-UNITY_PATH="/Applications/Unity/Hub/Editor/2022.3.12f1/Unity.app/Contents/MacOS/Unity"
+UNITY_PATH="/Applications/Unity/Hub/Editor/2022.3.62f1/Unity.app/Contents/MacOS/Unity"
 PROJECT_PATH="$(pwd)"
 BUILD_TYPE="${1:-development}"
 

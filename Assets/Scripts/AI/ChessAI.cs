@@ -23,7 +23,7 @@ namespace MRChess.AI
         // AI state
         private ChessBoard chessBoard;
         private bool isThinking = false;
-        private System.Coroutine thinkingCoroutine;
+        private UnityEngine.Coroutine thinkingCoroutine;
         
         // Events
         public System.Action<ChessMove> OnMoveSelected;

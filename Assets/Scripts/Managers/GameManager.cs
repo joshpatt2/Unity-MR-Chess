@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using MRChess.Chess;
 using MRChess.MR;
 
@@ -32,9 +31,9 @@ namespace MRChess.Managers
         
         [Header("UI References")]
         [SerializeField] private Canvas gameUI;
-        [SerializeField] private TextMeshProUGUI currentPlayerText;
-        [SerializeField] private TextMeshProUGUI gameStatusText;
-        [SerializeField] private TextMeshProUGUI moveHistoryText;
+        [SerializeField] private Text currentPlayerText;
+        [SerializeField] private Text gameStatusText;
+        [SerializeField] private Text moveHistoryText;
         [SerializeField] private Button newGameButton;
         [SerializeField] private Button placeBoardButton;
         [SerializeField] private Button undoMoveButton;
