@@ -29,29 +29,73 @@ A Mixed Reality Chess game for Meta Quest 2/3 using Unity's Universal Render Pip
 ```
 Assets/
 ├── Scripts/
-│   ├── Chess/              # Chess game logic
-│   ├── MR/                 # Mixed Reality components
-│   ├── UI/                 # User interface
-│   └── Managers/           # Game managers
-├── Prefabs/                # Game objects
-├── Materials/              # URP materials
-├── Scenes/                 # Unity scenes
-└── Settings/               # XR and URP settings
+│   ├── Chess/              # Chess game logic (ChessBoard, ChessPiece, ChessMove)
+│   ├── MR/                 # Mixed Reality components (SpatialAnchor, Interactions)
+│   ├── AI/                 # Chess AI engine (Minimax algorithm)
+│   ├── Managers/           # Game managers (GameManager)
+│   └── Setup/              # Unity setup automation tools
+├── Scenes/                 # Unity scenes (create MRChessGame.unity)
+├── Prefabs/                # Game objects (to be created)
+├── Materials/              # URP materials (to be created)
+└── UNITY_SETUP_CHECKLIST.md
+
+ProjectSettings/            # Unity project configuration
+Packages/                   # Package dependencies (manifest.json)
+Builds/                     # Build outputs
 ```
+
+## Documentation
+
+- **`QUICK_START.md`** - Immediate next steps after cloning
+- **`SETUP.md`** - Complete setup instructions  
+- **`DEVELOPMENT.md`** - Development workflow and best practices
+- **`Assets/UNITY_SETUP_CHECKLIST.md`** - Unity Editor configuration checklist
+- **`GITHUB_SETUP.md`** - Git and GitHub workflow
 
 ## Getting Started
 
-### 1. Unity Project Setup
+### Quick Setup (5 minutes)
 
-1. Create new Unity 3D project
-2. Install required packages via Package Manager:
-   - XR Interaction Toolkit
-   - OpenXR Plugin
-   - Universal Render Pipeline
-3. Import Meta XR All-in-One SDK
-4. Configure XR settings for OpenXR
+1. **Clone and Open Project**:
+   ```bash
+   git clone https://github.com/yourusername/Chess-AI.git
+   cd Chess-AI
+   ```
 
-### 2. Meta Quest Setup
+2. **Open in Unity Hub**:
+   - Open Unity Hub → Add → Select project folder
+   - Open with Unity 2022.3 LTS+ (project will auto-import packages)
+
+3. **Follow Setup Guide**:
+   - See `QUICK_START.md` for immediate next steps
+   - Complete Unity configuration with `Assets/UNITY_SETUP_CHECKLIST.md`
+
+### Current Project Status ✅
+
+- ✅ **Complete Chess Engine** - Full rule validation, move generation, AI opponent
+- ✅ **MR Components Ready** - Spatial anchors, hand tracking, piece interaction
+- ✅ **Unity Package Setup** - XR Interaction Toolkit, OpenXR, URP configured  
+- ✅ **Build System** - Automated build scripts for Meta Quest
+- ✅ **Documentation** - Comprehensive setup and development guides
+
+**Ready for:** Unity Editor setup → Scene creation → Quest testing
+
+### Detailed Setup Instructions
+
+#### 1. Unity Project Setup
+
+1. **Package Installation** (auto-imported from manifest.json):
+   - XR Interaction Toolkit (2.4.3+)
+   - OpenXR Plugin (1.8.2+)  
+   - Universal Render Pipeline (14.0.11+)
+   - AR Foundation (5.0.7+)
+
+2. **XR Configuration**:
+   - Edit → Project Settings → XR Plug-in Management
+   - Enable OpenXR for Android
+   - Configure Meta Quest support and hand tracking
+
+#### 2. Meta Quest Setup
 
 1. Enable Developer Mode on Quest device
 2. Install Meta Quest Developer Hub
@@ -85,15 +129,20 @@ The chess engine follows a modular MVVM pattern:
 
 ## Building and Deployment
 
-### Development Build
+### Quick Build
 ```bash
-# Build for development with debugging
-Unity -batchmode -quit -projectPath . -buildTarget Android -buildPath "./Builds/Development"
+# Development build with debugging
+./build.sh
+
+# Or use Unity Editor: File → Build Settings → Build
 ```
 
-### Release Build
+### Manual Build Commands
 ```bash
-# Optimized build for distribution
+# Development build
+Unity -batchmode -quit -projectPath . -buildTarget Android -buildPath "./Builds/Development"
+
+# Release build  
 Unity -batchmode -quit -projectPath . -buildTarget Android -buildPath "./Builds/Release"
 ```
 
