@@ -1,0 +1,52 @@
+Unity Editor version:    2022.3.62f1 (4af31df58517)
+Branch:                  2022.3/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 15.5 (Build 24F74)
+Darwin version:          24.5.0
+Architecture:            arm64
+Running under Rosetta:   NO
+Available memory:        32768 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-joshuapatterson" at "2025-07-23T03:53:20.966522Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 53416, path: "/Applications/Unity Hub.app/Contents/Frameworks/UnityLicensingClient_V1.app/Contents/MacOS/Unity.Licensing.Client")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.0+aa6cfba
+  Session Id:              a02d56ca38be448799e8e0491dee209d
+  Correlation Id:          8b170662e4fd1d26fb95a18fb52cfda6
+  External correlation Id: 1297979323807902830
+  Machine Id:              pLVlWLxsnkP4D9zbdJ3NSnjw8y8=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-joshuapatterson" (connect: 0.00s, validation: 0.01s, handshake: 0.19s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-joshuapatterson-notifications" at "2025-07-23T03:53:21.172125Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully updated license
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "20066856023480-UnityPersXXXX"
+Pro License: NO
+[Licensing::Client] Successfully resolved entitlement details
+Launching external process: /Applications/Unity/Hub/Editor/2022.3.62f1/Unity.app/Contents/Resources/PackageManager/Server/UnityPackageManager
+
+COMMAND LINE ARGUMENTS:
+/Applications/Unity/Hub/Editor/2022.3.62f1/Unity.app/Contents/MacOS/Unity
+-batchmode
+-quit
+-projectPath
+.
+-executeMethod
+UnityEditor.Compilation.CompilationPipeline.RequestScriptCompilation
+-logFile
+compilation-warnings.log
+Successfully changed project path to: /Users/joshuapatterson/Chess-AI
+/Users/joshuapatterson/Chess-AI
+It looks like another Unity instance is running with this project open.
+
+Multiple Unity instances cannot open the same project.
+
+Project: /Users/joshuapatterson/Chess-AI
+Fatal Error! It looks like another Unity instance is running with this project open.
+
+Multiple Unity instances cannot open the same project.
+
+Project: /Users/joshuapatterson/Chess-AI
+[Package Manager] Server::Kill -- Server was shutdown

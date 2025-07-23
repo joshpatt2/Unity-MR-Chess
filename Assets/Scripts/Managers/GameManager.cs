@@ -118,7 +118,9 @@ namespace MRChess.Managers
         {
             if (currentGameState == GameState.WaitingForBoard)
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogWarning("Cannot start game: Chess board not placed");
+#endif
                 return;
             }
             
@@ -137,7 +139,9 @@ namespace MRChess.Managers
             
             UpdateUI();
             
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log("New chess game started");
+#endif
         }
         
         /// <summary>
@@ -157,7 +161,9 @@ namespace MRChess.Managers
         public void UndoLastMove()
         {
             // TODO: Implement move undo functionality
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log("Undo move functionality not yet implemented");
+#endif
         }
         
         /// <summary>
@@ -350,7 +356,9 @@ namespace MRChess.Managers
         private void OnBoardPlaced(Vector3 position, Quaternion rotation)
         {
             UpdateGameState(GameState.Playing);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log("Chess board placed, ready to start game");
+#endif
         }
         
         private void OnBoardRemoved()
@@ -388,20 +396,26 @@ namespace MRChess.Managers
         private void OnCheck(PieceColor playerInCheck)
         {
             PlaySound(checkSound);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log($"{playerInCheck} is in check!");
+#endif
         }
         
         private void OnCheckmate(PieceColor playerCheckmated)
         {
             PlaySound(checkmateSound);
             UpdateGameState(GameState.GameOver);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log($"Checkmate! {playerCheckmated} loses.");
+#endif
         }
         
         private void OnStalemate()
         {
             UpdateGameState(GameState.GameOver);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log("Stalemate! Game is a draw.");
+#endif
         }
         
         private void OnPieceMovedByPlayer(ChessPieceInteractable piece, Vector2Int newPosition)

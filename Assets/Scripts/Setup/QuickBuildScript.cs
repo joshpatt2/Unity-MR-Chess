@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
@@ -27,16 +28,16 @@ public class QuickBuildScript
         EditorPrefs.SetInt("ActiveInputHandler", 2); // 2 = Input System Package (New)
 #endif
         
-        // VR Settings
-        PlayerSettings.virtualRealitySupported = false; // We use XR Management instead
+        // VR Settings - Use XR Management instead of legacy VR support
+        // PlayerSettings.virtualRealitySupported = false; // Obsolete - handled by XR Management
         
         Debug.Log("Android settings configured - ARM64 architecture set!");
         
         // Create scenes array
-        string[] scenes = { "Assets/Scenes/SampleScene.unity" };
+        string[] scenes = { "Assets/chess.unity" };
         
         // If we don't have scenes, create a minimal build
-        if (!File.Exists("Assets/Scenes/SampleScene.unity"))
+        if (!File.Exists("Assets/chess.unity"))
         {
             scenes = new string[0]; // Empty scenes - Unity will create a default scene
         }
@@ -66,3 +67,4 @@ public class QuickBuildScript
         }
     }
 }
+#endif

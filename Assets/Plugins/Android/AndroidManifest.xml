@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Meta Quest specific permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.oculus.permission.HAND_TRACKING" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    
+    <!-- OpenXR runtime support -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Quest headset requirements -->
+    <uses-feature
+        android:name="android.hardware.vr.headtracking"
+        android:version="1"
+        android:required="true" />
+    
+    <uses-feature
+        android:name="oculus.software.handtracking"
+        android:required="false" />
+
+    <!-- Declare this app as XR compatible -->
+    <uses-feature
+        android:name="android.software.vr.mode"
+        android:required="false" />
+
+    <application
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+        android:icon="@mipmap/app_icon"
+        android:label="@string/app_name"
+        android:allowBackup="false"
+        tools:replace="android:allowBackup">
+
+        <!-- Quest launcher category -->
+        <meta-data android:name="com.oculus.intent.category.VR" android:value="vr_only" />
+        
+        <!-- Enable hand tracking (optional feature) -->
+        <meta-data android:name="com.oculus.handtracking.frequency" android:value="HIGH" />
+        <meta-data android:name="com.oculus.handtracking.supported" android:value="true" />
+        
+        <!-- OpenXR configuration -->
+        <meta-data android:name="com.unity.xr.openxr.runtime_name" android:value="Oculus OpenXR Runtime" />
+
+        <activity
+            android:name="com.unity3d.player.UnityPlayerActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
+            android:launchMode="singleTask">
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <!-- Quest specific intent filter -->
+                <category android:name="com.oculus.intent.category.VR" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

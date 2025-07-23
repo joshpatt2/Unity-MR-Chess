@@ -15,7 +15,7 @@ namespace MRChess.MR
         [Header("Anchor Configuration")]
         [SerializeField] private GameObject chessBoardPrefab;
         [SerializeField] private float anchorRadius = 0.1f;
-        [SerializeField] private LayerMask anchorableLayers = -1;
+        // Note: anchorableLayers removed - not used in current implementation
         
         [Header("Placement Settings")]
         [SerializeField] private bool autoPlaceOnStart = false;
@@ -85,7 +85,9 @@ namespace MRChess.MR
                 RemoveBoard();
             }
             
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             Debug.Log("Entering board placement mode. Look at a flat surface and tap to place.");
+#endif
         }
         
         /// <summary>
@@ -130,6 +132,18 @@ namespace MRChess.MR
             if (raycastManager.Raycast(screenPosition, hits, TrackableType.PlaneWithinPolygon))
             {
                 var hit = hits[0];
+                
+                // Validate placement within anchor radius if we have an existing anchor
+                if (currentAnchor != null)
+                {
+                    float distanceToExisting = Vector3.Distance(hit.pose.position, currentAnchor.transform.position);
+                    if (distanceToExisting < anchorRadius)
+                    {
+                        Debug.LogWarning($"Placement too close to existing anchor. Distance: {distanceToExisting:F2}m, required: {anchorRadius:F2}m");
+                        return;
+                    }
+                }
+                
                 PlaceBoardAtPose(hit.pose);
             }
             else
@@ -144,16 +158,22 @@ namespace MRChess.MR
         
         /// <summary>
         /// Place chess board at specified pose with spatial anchor
+        /// Uses modern AR Foundation API (AddComponent<ARAnchor>() instead of obsolete AddAnchor())
         /// </summary>
         public void PlaceBoardAtPose(Pose pose)
         {
             // Remove existing board
             RemoveBoard();
             
-            // Create anchor
-            currentAnchor = anchorManager.AddAnchor(pose);
-            
-            if (currentAnchor != null)
+            try
+            {
+                // Create anchor using the modern AR Foundation API
+                // Note: AddAnchor(pose) is obsolete since AR Foundation 4.0
+                GameObject anchorGameObject = new GameObject("ChessBoardAnchor");
+                anchorGameObject.transform.SetPositionAndRotation(pose.position, pose.rotation);
+                currentAnchor = anchorGameObject.AddComponent<ARAnchor>();
+                
+                if (currentAnchor != null)
             {
                 // Instantiate board at anchor position
                 boardInstance = Instantiate(chessBoardPrefab, currentAnchor.transform);
@@ -172,11 +192,24 @@ namespace MRChess.MR
                 // Notify listeners
                 OnBoardPlaced?.Invoke(pose.position, pose.rotation);
                 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.Log($"Chess board placed at {pose.position}");
+#endif
             }
             else
             {
                 Debug.LogWarning("Failed to create spatial anchor for chess board");
+            }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error placing chess board anchor: {e.Message}");
+                // Clean up any partially created objects
+                if (currentAnchor != null && currentAnchor.gameObject != null)
+                {
+                    DestroyImmediate(currentAnchor.gameObject);
+                    currentAnchor = null;
+                }
             }
         }
         
@@ -205,7 +238,16 @@ namespace MRChess.MR
             
             if (currentAnchor != null)
             {
-                anchorManager.RemoveAnchor(currentAnchor);
+                // Remove the anchor and destroy the anchor GameObject
+                if (anchorManager != null && currentAnchor != null)
+                {
+                    // Destroy the anchor GameObject first
+                    if (currentAnchor.gameObject != null)
+                    {
+                        DestroyImmediate(currentAnchor.gameObject);
+                    }
+                }
+                
                 currentAnchor = null;
             }
             

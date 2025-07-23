@@ -1,0 +1,72 @@
+// Custom Unity Library Gradle Template
+// Fixes resource shrinking issue for Quest builds
+
+apply plugin: 'com.android.library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+android {
+    namespace "com.unity3d.player"
+    ndkPath "**NDKPATH**"
+    
+    compileSdkVersion **APIVERSION**
+    buildToolsVersion '**BUILDTOOLS**'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        consumerProguardFiles 'proguard-unity.txt'
+        minSdkVersion **MINSDKVERSION**
+        targetSdkVersion **TARGETSDKVERSION**
+        
+        ndk {
+            abiFilters **ABIFILTERS**
+        }
+        
+        versionCode **VERSIONCODE**
+        versionName '**VERSIONNAME**'
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+            // CRITICAL: Do not enable resource shrinking for libraries
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            crunchPngs false
+        }
+        release {
+            debuggable false
+            jniDebuggable false
+            minifyEnabled false
+            // CRITICAL: Resource shrinking must be disabled for Unity libraries
+            // This prevents "Resource shrinker cannot be used for libraries" error
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-unity.txt'
+            crunchPngs true
+        }
+    }
+
+    aaptOptions {
+        noCompress = ['.ress', '.resource', '.obb'] + unityStreamingAssets.tokenize(', ')
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
+
+    packagingOptions {
+        doNotStrip '*/arm64-v8a/libunity.so'
+        doNotStrip '*/arm64-v8a/libil2cpp.so'
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}

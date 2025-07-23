@@ -4,6 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/chess.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 088f5f5a6092140ad897f5acb37e7b53, type: 2}
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 6baa9da38d2c74406b5e0dc1066452f7, type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 4cc6e66a9768d46c3bdf60e76aecaaf6, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 758de302105f0471f806fe78ec803d11, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 1b6bd3b5af8e34f33b18a5c151f28c9c, type: 2}

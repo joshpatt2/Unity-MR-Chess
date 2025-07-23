@@ -1,0 +1,101 @@
+// Custom Gradle build template for Meta Quest MR Chess
+// This template optimizes the build for Quest hardware
+
+apply plugin: 'com.android.library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':unityLibrary')
+    // Add any additional dependencies here
+}
+
+android {
+	namespace "com.DefaultCompany.MRChess"
+	ndkPath "**NDKPATH**"
+	aaptOptions {
+		noCompress = ['.ress', '.resource', '.obb'] + unityStreamingAssets.tokenize(', ')
+		ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
+	}
+
+    compileSdkVersion **APIVERSION**
+    buildToolsVersion '**BUILDTOOLS**'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+consumerProguardFiles 'proguard-unity.txt'**USER_PROGUARD**
+        consumerProguardFiles 'proguard-unity.txt'**USER_PROGUARD**
+        applicationId "com.DefaultCompany.MRChess"
+        minSdkVersion **MINSDKVERSION**
+        targetSdkVersion **TARGETSDKVERSION**
+        ndk {
+            // Quest uses ARM64 architecture
+            abiFilters 'arm64-v8a'
+        }
+        versionCode **VERSIONCODE**
+        versionName '**VERSIONNAME**'
+        
+        // Enable multidex for large APKs
+        multiDexEnabled true
+        
+        // Optimize for Quest hardware
+        renderscriptTargetApi **TARGETSDKVERSION**
+        renderscriptSupportModeEnabled false
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            // Quest development optimization
+            crunchPngs false
+            zipAlignEnabled false
+            // Resource shrinking disabled for debug builds
+            shrinkResources false
+        }
+        release {
+            debuggable false
+            jniDebuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-unity.txt'
+            // Quest release optimizations
+            crunchPngs true
+            zipAlignEnabled true
+            // Resource shrinking disabled for compatibility
+            shrinkResources false
+        }
+    }
+
+    packagingOptions {
+        doNotStrip '*/arm64-v8a/libunity.so'
+        doNotStrip '*/arm64-v8a/libil2cpp.so'
+        // Exclude unnecessary files to reduce APK size
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+// Quest-specific build optimizations
+tasks.whenTaskAdded { task ->
+    if (task.name.contains('package')) {
+        task.doLast {
+            println "✅ Quest APK build completed!"
+            println "📦 APK optimized for Meta Quest hardware"
+        }
+    }
+}

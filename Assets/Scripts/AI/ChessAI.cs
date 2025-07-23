@@ -17,13 +17,14 @@ namespace MRChess.AI
         [SerializeField] private bool showThinking = true;
         
         [Header("Search Parameters")]
-        [SerializeField] private int maxDepth = 4;
+        [SerializeField] private int maxDepth = 4; // Base search depth, modified by difficulty level
         [SerializeField] private float timeLimit = 5.0f;
         
         // AI state
         private ChessBoard chessBoard;
         private bool isThinking = false;
         private UnityEngine.Coroutine thinkingCoroutine;
+        private System.DateTime searchStartTime;
         
         // Events
         public System.Action<ChessMove> OnMoveSelected;
@@ -92,7 +93,9 @@ namespace MRChess.AI
             
             if (showThinking)
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.Log("AI is thinking...");
+#endif
             }
             
             // Add thinking delay for realism
@@ -110,12 +113,16 @@ namespace MRChess.AI
                 
                 if (showThinking)
                 {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                     Debug.Log($"AI selected move: {bestMove.GetAlgebraicNotation()}");
+#endif
                 }
             }
             else
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 Debug.LogWarning("AI could not find a valid move");
+#endif
             }
         }
         
@@ -134,8 +141,24 @@ namespace MRChess.AI
             ChessMove bestMove = null;
             float bestScore = float.MinValue;
             
+            // Start time tracking for the time limit
+            searchStartTime = System.DateTime.Now;
+            
             foreach (var move in validMoves)
             {
+                // Check if we've exceeded the time limit
+                var elapsed = (System.DateTime.Now - searchStartTime).TotalSeconds;
+                if (elapsed >= timeLimit)
+                {
+                    if (showThinking)
+                    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                        Debug.Log($"AI reached time limit of {timeLimit}s, returning best move found so far");
+#endif
+                    }
+                    break;
+                }
+                
                 // Make the move temporarily
                 var boardCopy = CreateBoardCopy();
                 MakeTemporaryMove(boardCopy, move);
@@ -158,6 +181,13 @@ namespace MRChess.AI
         /// </summary>
         private float Minimax(ChessPiece[,] board, int depth, float alpha, float beta, bool isMaximizing)
         {
+            // Check time limit to avoid infinite search
+            var elapsed = (System.DateTime.Now - searchStartTime).TotalSeconds;
+            if (elapsed >= timeLimit)
+            {
+                return EvaluatePosition(board); // Return current evaluation if time limit reached
+            }
+            
             if (depth == 0)
             {
                 return EvaluatePosition(board);
@@ -360,14 +390,17 @@ namespace MRChess.AI
         /// </summary>
         private int GetSearchDepth()
         {
-            return difficulty switch
+            int baseDepth = difficulty switch
             {
-                DifficultyLevel.Easy => 2,
-                DifficultyLevel.Medium => 3,
-                DifficultyLevel.Hard => 4,
-                DifficultyLevel.Expert => 5,
-                _ => 3
+                DifficultyLevel.Easy => Mathf.Max(1, maxDepth - 2),
+                DifficultyLevel.Medium => Mathf.Max(2, maxDepth - 1),
+                DifficultyLevel.Hard => maxDepth,
+                DifficultyLevel.Expert => Mathf.Max(maxDepth, maxDepth + 1),
+                _ => Mathf.Max(2, maxDepth - 1)
             };
+            
+            // Ensure depth is at least 1 and doesn't exceed reasonable limits
+            return Mathf.Clamp(baseDepth, 1, 8);
         }
         
         // Helper methods for board manipulation

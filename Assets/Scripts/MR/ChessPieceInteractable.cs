@@ -17,7 +17,7 @@ namespace MRChess.MR
         [Header("Interaction Settings")]
         [SerializeField] private bool allowGrabbing = true;
         [SerializeField] private bool showValidMoves = true;
-        [SerializeField] private float hoverHeight = 0.02f;
+        [SerializeField] private float hoverHeight = 0.02f; // Height to lift piece when hovered (in meters)
         [SerializeField] private float moveSpeed = 5.0f;
         
         [Header("Visual Feedback")]
@@ -200,6 +200,10 @@ namespace MRChess.MR
             if (!isSelected)
             {
                 SetHighlight(true, 0.5f);
+                
+                // Lift piece slightly when hovered
+                Vector3 hoverPosition = originalPosition + Vector3.up * hoverHeight;
+                transform.position = hoverPosition;
             }
         }
         
@@ -211,6 +215,9 @@ namespace MRChess.MR
             if (!isSelected)
             {
                 SetHighlight(false);
+                
+                // Return piece to original position
+                transform.position = originalPosition;
             }
         }
         
@@ -358,6 +365,7 @@ namespace MRChess.MR
             {
                 // Movement complete
                 transform.position = boardPosition;
+                originalPosition = boardPosition; // Update original position for hover effects
                 isMoving = false;
                 
                 // Re-enable physics

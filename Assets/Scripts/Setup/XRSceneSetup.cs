@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using Unity.XR.CoreUtils;
-using UnityEngine.InputSystem;
 using UnityEngine.SpatialTracking;
 
 namespace MRChess.Setup
@@ -16,12 +15,7 @@ namespace MRChess.Setup
         [SerializeField] private bool setupXROrigin = true;
         [SerializeField] private bool setupInteractionManager = true;
         [SerializeField] private bool setupControllers = true;
-        [SerializeField] private bool setupHandTracking = true;
-
-        [Header("Prefab References")]
-        [SerializeField] private GameObject xrOriginPrefab;
-        [SerializeField] private GameObject leftControllerPrefab;
-        [SerializeField] private GameObject rightControllerPrefab;
+        // Note: Hand tracking setup removed - not implemented in current version
 
         private void Start()
         {

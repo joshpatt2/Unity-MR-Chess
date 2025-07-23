@@ -376,6 +376,33 @@ namespace MRChess.Chess
         }
         
         /// <summary>
+        /// Check if castling is possible for the given color and side
+        /// </summary>
+        public bool CanCastle(PieceColor color, bool kingSide)
+        {
+            // Check if king has moved
+            if (color == PieceColor.White && whiteKingMoved) return false;
+            if (color == PieceColor.Black && blackKingMoved) return false;
+            
+            // Check if the relevant rook has moved
+            if (color == PieceColor.White)
+            {
+                if (kingSide && whiteKingSideRookMoved) return false;
+                if (!kingSide && whiteQueenSideRookMoved) return false;
+            }
+            else
+            {
+                if (kingSide && blackKingSideRookMoved) return false;
+                if (!kingSide && blackQueenSideRookMoved) return false;
+            }
+            
+            // Additional castling checks (squares between king and rook must be empty, etc.)
+            // would be implemented here in a full chess implementation
+            
+            return true;
+        }
+        
+        /// <summary>
         /// Check if player is in checkmate
         /// </summary>
         public bool IsCheckmate(PieceColor playerColor)
