@@ -19,6 +19,14 @@ public class QuickBuildScript
         PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel24; // Fix ARCore issue
         PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
         
+        // Fix Android CPU Architecture for Quest (ARM64)
+        PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+        
+        // Fix Input System setting for Android VR
+#if ENABLE_INPUT_SYSTEM
+        EditorPrefs.SetInt("ActiveInputHandler", 2); // 2 = Input System Package (New)
+#endif
+        
         // VR Settings
         PlayerSettings.virtualRealitySupported = false; // We use XR Management instead
         
