@@ -11,6 +11,9 @@ public class QuickBuildScript
         // Set Android as target
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
         
+        // CRITICAL: Set architecture FIRST before other settings
+        PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+        
         // Basic player settings for Quest
         PlayerSettings.productName = "MR Chess";
         PlayerSettings.companyName = "MR Chess Team";
@@ -19,9 +22,6 @@ public class QuickBuildScript
         PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel24; // Fix ARCore issue
         PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
         
-        // Fix Android CPU Architecture for Quest (ARM64)
-        PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
-        
         // Fix Input System setting for Android VR
 #if ENABLE_INPUT_SYSTEM
         EditorPrefs.SetInt("ActiveInputHandler", 2); // 2 = Input System Package (New)
@@ -29,6 +29,8 @@ public class QuickBuildScript
         
         // VR Settings
         PlayerSettings.virtualRealitySupported = false; // We use XR Management instead
+        
+        Debug.Log("Android settings configured - ARM64 architecture set!");
         
         // Create scenes array
         string[] scenes = { "Assets/Scenes/SampleScene.unity" };
