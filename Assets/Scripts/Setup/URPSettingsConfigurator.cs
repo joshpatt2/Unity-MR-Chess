@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 namespace MRChess.Setup
@@ -22,7 +23,7 @@ namespace MRChess.Setup
         [SerializeField] private float renderScale = 1.0f;
         
         [Header("Shadows")]
-        [SerializeField] private UnityEngine.ShadowQuality mainLightShadows = UnityEngine.ShadowQuality.HardShadows;
+        [SerializeField] private UnityEngine.ShadowQuality mainLightShadows = UnityEngine.ShadowQuality.All;
         [SerializeField] private UnityEngine.ShadowQuality additionalLightShadows = UnityEngine.ShadowQuality.Disable;
         [SerializeField] private int shadowDistance = 30;
 
@@ -45,9 +46,9 @@ namespace MRChess.Setup
             
             // Configure quality settings that can be set via script
             QualitySettings.antiAliasing = msaaSampleCount;
-            QualitySettings.shadows = UnityEngine.ShadowQuality.HardShadows;
+            QualitySettings.shadows = UnityEngine.ShadowQuality.All;
             QualitySettings.shadowDistance = shadowDistance;
-            QualitySettings.shadowResolution = ShadowResolution.Medium;
+            QualitySettings.shadowResolution = UnityEngine.ShadowResolution.Medium;
             QualitySettings.shadowProjection = ShadowProjection.CloseFit;
             QualitySettings.shadowCascades = 0; // No cascades for mobile VR
             
