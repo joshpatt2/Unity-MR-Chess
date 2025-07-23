@@ -49,11 +49,8 @@ if [ "$BUILD_TYPE" = "development" ]; then
         -batchmode \
         -quit \
         -projectPath "$PROJECT_PATH" \
-        -buildTarget Android \
-        -buildPath "$DEV_BUILD_PATH/MRChess-Dev.apk" \
-        -logFile "$DEV_BUILD_PATH/build.log" \
-        -developmentBuild \
-        -allowDebugging
+        -executeMethod QuickBuildScript.BuildAndroid \
+        -logFile "$DEV_BUILD_PATH/build.log"
         
 elif [ "$BUILD_TYPE" = "release" ]; then
     echo -e "${YELLOW}Building Release Version...${NC}"
@@ -61,8 +58,7 @@ elif [ "$BUILD_TYPE" = "release" ]; then
         -batchmode \
         -quit \
         -projectPath "$PROJECT_PATH" \
-        -buildTarget Android \
-        -buildPath "$RELEASE_BUILD_PATH/MRChess.apk" \
+        -executeMethod QuickBuildScript.BuildAndroid \
         -logFile "$RELEASE_BUILD_PATH/build.log"
         
 else
